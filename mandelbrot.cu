@@ -35,7 +35,6 @@ __global__ void mandelbrotKernel(int *output, int width, int height, float x_min
             x = x_temp;
             iter++;
         }
-
         output[idy * width + idx] = iter;
     }
 }
@@ -84,9 +83,9 @@ void computeMandelbrot(int width, int height, int max_iter) {
 }
 
 int main() {
-    int width = 1024;
-    int height = 1024;
-    int max_iter = 1000;
+    int width = 4096;
+    int height = 4096;
+    int max_iter = 1000000;
 
     computeMandelbrot(width, height, max_iter);
 

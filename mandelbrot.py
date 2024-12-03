@@ -67,7 +67,7 @@ def mandelbrot_gpu(width, height, max_iter):
     return output.reshape((height, width)), timers
 
 if __name__ == "__main__":
-    width, height, max_iter = 1024, 1024, 1000
+    width, height, max_iter = 4096, 4096, 1000000
     result, timers = mandelbrot_gpu(width, height, max_iter)
 
     # Save the output for visualization
