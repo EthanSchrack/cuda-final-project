@@ -85,8 +85,9 @@ void computeMandelbrot(int width, int height, int max_iter) {
 int main() {
     int width = 4096;
     int height = 4096;
-    int max_iter = 1000000;
+    int max_iter = 50;
 
+    std::cout << "Grid Resolution: " << width << "x" << height << "\n";
     computeMandelbrot(width, height, max_iter);
 
     return 0;
