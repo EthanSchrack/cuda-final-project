@@ -2,7 +2,6 @@ import re
 import matplotlib.pyplot as plt
 import numpy as np
 
-# Sample outputs from Python and C++ programs for testing
 python_output = """
 Matrix Size: 512x512
 Memory Allocation: 0.000729 s
@@ -88,7 +87,6 @@ def plot_line_graph(python_data, cpp_data, filename="line_graph.png"):
     python_sizes = [entry["Matrix Size"] for entry in python_data]
     cpp_sizes = [entry["Matrix Size"] for entry in cpp_data]
 
-    # Extract total CPU and kernel times
     python_cpu_labels = ["Memory Allocation", "Kernel Compilation", "Copy Back"]
     cpp_cpu_labels = ["Memory Allocation", "Host to Device Copy", "Device to Host Copy"]
     python_cpu_times = extract_times(python_data, python_cpu_labels)
@@ -97,7 +95,6 @@ def plot_line_graph(python_data, cpp_data, filename="line_graph.png"):
     python_kernel_times = extract_times(python_data, ["Kernel Execution"])
     cpp_kernel_times = extract_times(cpp_data, ["Kernel Execution"])
 
-    # Plot line graph
     plt.figure(figsize=(10, 6))
     plt.plot(python_sizes, python_cpu_times, label="Python CPU Time", marker="o", color="blue")
     plt.plot(python_sizes, python_kernel_times, label="Python Kernel Time", marker="o", color="blue", alpha=0.4)
@@ -113,9 +110,7 @@ def plot_line_graph(python_data, cpp_data, filename="line_graph.png"):
     plt.savefig(filename)
     print(f"Plot saved as {filename}")
 
-# Parse the sample outputs
 python_data = parse_output(python_output, is_python=True)
 cpp_data = parse_output(cpp_output)
 
-# Save the line graph
 plot_line_graph(python_data, cpp_data, filename="execution_time_comparison.png")

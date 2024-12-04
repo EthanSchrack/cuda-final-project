@@ -5,7 +5,6 @@ from pycuda import gpuarray
 from pycuda.compiler import SourceModule
 import time
 
-# Kernel function for matrix multiplication
 matrix_mult_kernel = """
 __global__ void matmul(float *A, float *B, float *C, int N) {
     int row = blockIdx.y * blockDim.y + threadIdx.y;
@@ -29,19 +28,16 @@ def matrix_multiplication_gpu(A, B, N):
     timers = {}
     start = time.time()
 
-    # Allocate memory on the device
     A_gpu = gpuarray.to_gpu(A)
     B_gpu = gpuarray.to_gpu(B)
     C_gpu = gpuarray.empty((N, N), np.float32)
     timers['Memory Allocation'] = time.time() - start
 
-    # Compile kernel
     start = time.time()
     mod = SourceModule(matrix_mult_kernel)
     matmul = mod.get_function("matmul")
     timers['Kernel Compilation'] = time.time() - start
 
-    # Launch kernel
     start = time.time()
     block_size = 16
     grid_size = (N + block_size - 1) // block_size
@@ -51,7 +47,6 @@ def matrix_multiplication_gpu(A, B, N):
     cuda.Context.synchronize()
     timers['Kernel Execution'] = time.time() - start
 
-    # Copy results back to host
     start = time.time()
     C = C_gpu.get()
     timers['Copy Back'] = time.time() - start

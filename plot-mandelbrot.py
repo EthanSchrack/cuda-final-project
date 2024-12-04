@@ -1,7 +1,6 @@
 import re
 import matplotlib.pyplot as plt
 
-# Example Mandelbrot outputs for testing (adjust with your actual logs)
 python_output = """
 Grid Resolution: 1080x1080
 Memory Allocation: 0.101610 s
@@ -76,7 +75,6 @@ def plot_line_graph(python_data, cpp_data, filename="mandelbrot_comparison.png")
     python_kernel_times = extract_times(python_data, ["Kernel Execution"])
     cpp_kernel_times = extract_times(cpp_data, ["Kernel Execution"])
 
-    # Plot line graph
     plt.figure(figsize=(10, 6))
     plt.plot(python_resolutions, python_cpu_times, label="Python CPU Time", marker="o", color="blue")
     plt.plot(python_resolutions, python_kernel_times, label="Python Kernel Time", marker="o", color="blue", alpha=0.4)
@@ -92,9 +90,7 @@ def plot_line_graph(python_data, cpp_data, filename="mandelbrot_comparison.png")
     plt.savefig(filename)
     print(f"Plot saved as {filename}")
 
-# Parse the sample outputs
 python_data = parse_output(python_output, is_python=True)
 cpp_data = parse_output(cpp_output)
 
-# Save the line graph
 plot_line_graph(python_data, cpp_data, filename="mandelbrot_time_comparison.png")

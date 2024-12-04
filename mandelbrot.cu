@@ -14,7 +14,6 @@ void saveMandelbrotToFile(int *data, int width, int height, const std::string &f
     file.close();
 }
 
-// Define a device function to calculate the Mandelbrot set
 __global__ void mandelbrotKernel(int *output, int width, int height, float x_min, float x_max, float y_min, float y_max, int max_iter) {
     int idx = threadIdx.x + blockIdx.x * blockDim.x;
     int idy = threadIdx.y + blockIdx.y * blockDim.y;
@@ -39,17 +38,14 @@ __global__ void mandelbrotKernel(int *output, int width, int height, float x_min
     }
 }
 
-// Host function to run the Mandelbrot set computation
 void computeMandelbrot(int width, int height, int max_iter) {
     int *h_output, *d_output;
     size_t size = width * height * sizeof(int);
 
-    // Allocate host memory
     h_output = (int *)malloc(size);
 
     auto start = std::chrono::high_resolution_clock::now();
 
-    // Allocate device memory
     cudaMalloc(&d_output, size);
 
     auto end = std::chrono::high_resolution_clock::now();
@@ -60,7 +56,6 @@ void computeMandelbrot(int width, int height, int max_iter) {
 
     start = std::chrono::high_resolution_clock::now();
 
-    // Execute the kernel
     mandelbrotKernel<<<grid, block>>>(d_output, width, height, -2.0f, 1.0f, -1.5f, 1.5f, max_iter);
     cudaDeviceSynchronize();
 
@@ -69,7 +64,6 @@ void computeMandelbrot(int width, int height, int max_iter) {
 
     start = std::chrono::high_resolution_clock::now();
 
-    // Copy result back to host
     cudaMemcpy(h_output, d_output, size, cudaMemcpyDeviceToHost);
 
     end = std::chrono::high_resolution_clock::now();
@@ -77,7 +71,6 @@ void computeMandelbrot(int width, int height, int max_iter) {
 
     saveMandelbrotToFile(h_output, width, height, "mandelbrot.txt");
 
-    // Clean up memory
     cudaFree(d_output);
     free(h_output);
 }

@@ -36,18 +36,15 @@ def mandelbrot_gpu(width, height, max_iter):
     timers = {}
     size = width * height
 
-    # Allocate memory for the output
     start = time.time()
     output_gpu = gpuarray.zeros(size, dtype=np.int32)
     timers['Memory Allocation'] = time.time() - start
 
-    # Compile the kernel
     start = time.time()
     mod = SourceModule(mandelbrot_kernel)
     kernel = mod.get_function("mandelbrotKernel")
     timers['Kernel Compilation'] = time.time() - start
 
-    # Execute the kernel
     start = time.time()
     block_dim = (16, 16, 1)
     grid_dim = ((width + 15) // 16, (height + 15) // 16)
@@ -59,7 +56,6 @@ def mandelbrot_gpu(width, height, max_iter):
     cuda.Context.synchronize()
     timers['Kernel Execution'] = time.time() - start
 
-    # Copy the results back to host
     start = time.time()
     output = output_gpu.get()
     timers['Copy Back'] = time.time() - start
@@ -71,9 +67,7 @@ if __name__ == "__main__":
     print(f"Grid Resolution: {width}x{height}")
     result, timers = mandelbrot_gpu(width, height, max_iter)
 
-    # Save the output for visualization
     np.savetxt("mandelbrot_pycuda.txt", result, fmt='%d')
 
-    # Print timing
     for step, duration in timers.items():
         print(f"{step}: {duration:.6f} s")
